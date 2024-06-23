@@ -8,7 +8,6 @@ namespace Elevator
 {
     class Program
     {
-
         class Job
         {
             private int jobNumber;
@@ -27,7 +26,6 @@ namespace Elevator
                 foreach (int p in passPicks) { pickUps.Add(p); }
                 foreach (int d in passDrops) { dropOffs.Add(d); }
             }
-
         }
 
         class Passenger
@@ -45,8 +43,8 @@ namespace Elevator
                 dropOff = dOff;
                 CurrentLocation = level;
             }
-
         }
+
         class Elevator
         {
             //Expressed as seconds per floor
@@ -100,13 +98,13 @@ namespace Elevator
 
             public DownMenuItem(int i)
             {
-                index = i;
-              
+                index = i;              
             }
+
             public override void PerformAction()
             {
                 Console.WriteLine("Ahoy from Down");
-            }        
+            }     
 
             public override void PrintItem()
             {
@@ -143,13 +141,11 @@ namespace Elevator
                 menuItems = mItems;
             }
 
-
             public void PrintMenu()
             {
                 Console.WriteLine("Please make a selection. (1, 2 or 3)");
                 foreach(MenuItem item in menuItems)
                 {
-
                     item.PrintItem();
                 }
             }
@@ -158,9 +154,7 @@ namespace Elevator
             {
                 menuItems[index - 1].PerformAction(); 
             }
-        }
-
-    
+        }    
 
         static void Main(string[] args)
         {
@@ -185,13 +179,10 @@ namespace Elevator
                     Console.WriteLine("only numbers 1, 2 or 3 followed by enter.");                    
                     menu.PrintMenu();
                 }
-            }
-            
+            }            
             
             menu.CallMenuItem(selection);
-
             Console.Read();
-
         }
     }
 }

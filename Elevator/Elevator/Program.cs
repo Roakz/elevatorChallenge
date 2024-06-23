@@ -123,8 +123,33 @@ namespace Elevator
             }
             public override void PerformAction() 
             {
-                Console.WriteLine("Ahoy from Instruction");
+                PrintInstructions();
             }
+
+            public override void PrintItem()
+            {
+                Console.WriteLine($"{index}. {name}");
+            }
+
+            public void PrintInstructions()
+            {
+                Console.WriteLine("How to Play,\n1. Select up or down from the selection menu.\n2.Enter a passenger name, current level and desired level when prompted." +
+                    "\n3.Watch for updates as your passenger travels on the elevator.\n4. Keep adding passengers. As many as you can!.\nPRESS ANY BUTTON TO CONTINUE.");
+                Console.Read();
+            }
+        }
+
+        class ExitMenuItem : MenuItem
+        {
+            int index;
+            string name = "Exit";
+
+            public ExitMenuItem(int i)
+            {
+                index = i;
+            }
+
+            public override void PerformAction() { }
 
             public override void PrintItem()
             {
@@ -155,20 +180,20 @@ namespace Elevator
                 menuItems[index - 1].PerformAction(); 
             }
 
-            public void selectionHandler()
+            public bool selectionHandler()
             {
-                int selection = 0;
+                int selection = 0;         
 
                 while (selection == 0)
                 {
                     try
                     {
                         int possibleSelection = Convert.ToInt32(Console.ReadLine());
-                        if (possibleSelection > 3 || possibleSelection < 1) { throw new ArgumentException(); }
+                        if (possibleSelection > 4 || possibleSelection < 1) { throw new ArgumentException(); }
                         else
-                        {
-                            selection = possibleSelection;
-                        }
+                        {                            
+                            selection = possibleSelection;                            
+                        }                        
                     }
                     catch
                     {
@@ -178,18 +203,22 @@ namespace Elevator
                     }
                 }
 
-               CallMenuItem(selection);
+                if (selection == 4) { return false; }
+                CallMenuItem(selection);       
+                return true;
             }
         }    
 
         static void Main(string[] args)
         {
-            List<MenuItem> menuItemList = new List<MenuItem> { new UpMenuItem(1), new DownMenuItem(2), new InstructionMenuItem(3) };            
+            List<MenuItem> menuItemList = new List<MenuItem> { new UpMenuItem(1), new DownMenuItem(2), new InstructionMenuItem(3), new ExitMenuItem(4)};            
             Menu menu = new Menu(menuItemList);
-            menu.PrintMenu();
-            menu.selectionHandler();
-            
-            Console.Read();
+            bool play;
+            do
+            {                
+                menu.PrintMenu();                
+                play = menu.selectionHandler();
+            } while (play);            
         }
     }
 }

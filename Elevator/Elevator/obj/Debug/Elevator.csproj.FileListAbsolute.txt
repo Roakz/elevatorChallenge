@@ -1,0 +1,7 @@
+C:\Users\rory_\projects\elevatorChallenge\Elevator\Elevator\bin\Debug\Elevator.exe.config
+C:\Users\rory_\projects\elevatorChallenge\Elevator\Elevator\bin\Debug\Elevator.exe
+C:\Users\rory_\projects\elevatorChallenge\Elevator\Elevator\bin\Debug\Elevator.pdb
+C:\Users\rory_\projects\elevatorChallenge\Elevator\Elevator\obj\Debug\Elevator.csproj.CoreCompileInputs.cache
+C:\Users\rory_\projects\elevatorChallenge\Elevator\Elevator\obj\Debug\Elevator.exe
+C:\Users\rory_\projects\elevatorChallenge\Elevator\Elevator\obj\Debug\Elevator.pdb
+C:\Users\rory_\projects\elevatorChallenge\Elevator\Elevator\obj\Debug\Elevator.csprojAssemblyReference.cache

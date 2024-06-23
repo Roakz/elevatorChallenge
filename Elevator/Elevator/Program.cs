@@ -61,23 +61,19 @@ namespace Elevator
 
         abstract class MenuItem
         {
-            int index;
-            string name;
+            virtual public int Index { get; }
             abstract public void PerformAction();
-            virtual public void PrintItem()
-            {
-                Console.WriteLine($"{index}. {name}");
-            }
+            abstract public void PrintItem();
         }
 
         class UpMenuItem : MenuItem
         {
-            public int index;
-            public string name = "Up";
-
+            public override int Index { get; }
+            private readonly string name;
             public UpMenuItem(int i)
             {
-                index = i;                
+                Index = i;
+                name = "Up";
             }
             public override void PerformAction()
             {
@@ -86,19 +82,19 @@ namespace Elevator
             
             public override void PrintItem()
             {
-                Console.WriteLine($"{index}. {name}");
+                Console.WriteLine($"{Index}. {name}");
             }
         }
 
         class DownMenuItem : MenuItem
         {
-
-            protected int index;
-            public string name = "Down";
+            public override int Index {get;}           
+            private readonly string name;
 
             public DownMenuItem(int i)
             {
-                index = i;              
+                Index = i;
+                name = "Down";
             }
 
             public override void PerformAction()
@@ -108,18 +104,18 @@ namespace Elevator
 
             public override void PrintItem()
             {
-                Console.WriteLine($"{index}. {name}");
+                Console.WriteLine($"{Index}. {name}");
             }
         }
         class InstructionMenuItem : MenuItem
         {
-
-            public int index;
-            public string name = "Instructions";
+            public override int Index { get; }
+            private readonly string name;
 
             public InstructionMenuItem(int i)
             {
-                index = i;
+                Index = i;
+                name = "Instructions";
             }
             public override void PerformAction() 
             {
@@ -128,7 +124,7 @@ namespace Elevator
 
             public override void PrintItem()
             {
-                Console.WriteLine($"{index}. {name}");
+                Console.WriteLine($"{Index}. {name}");
             }
 
             public void PrintInstructions()
@@ -141,19 +137,20 @@ namespace Elevator
 
         class ExitMenuItem : MenuItem
         {
-            int index;
-            string name = "Exit";
+            public override int Index { get; }
+            private readonly string name;
 
             public ExitMenuItem(int i)
             {
-                index = i;
+                Index = i;
+                name = "Exit";
             }
 
             public override void PerformAction() { }
 
             public override void PrintItem()
             {
-                Console.WriteLine($"{index}. {name}");
+                Console.WriteLine($"{Index}. {name}");
             }
         }
 
@@ -163,7 +160,17 @@ namespace Elevator
 
             public Menu(List<MenuItem> mItems)
             {
-                menuItems = mItems;
+                List<MenuItem> sortedList = new List<MenuItem> { };
+                IEnumerable<MenuItem> menuItemQuery =
+                    from item in mItems
+                    orderby item.Index
+                    select item;
+                foreach (MenuItem i in menuItemQuery)
+                {
+                    sortedList.Add(i);
+                    Console.WriteLine(i.Index);
+                }
+                menuItems = sortedList;
             }
 
             public void PrintMenu()
@@ -175,9 +182,9 @@ namespace Elevator
                 }
             }
 
-            public void CallMenuItem(int index)
+            public void CallMenuItem(int Index)
             {
-                menuItems[index - 1].PerformAction(); 
+                menuItems[Index - 1].PerformAction(); 
             }
 
             public bool selectionHandler()
@@ -211,7 +218,7 @@ namespace Elevator
 
         static void Main(string[] args)
         {
-            List<MenuItem> menuItemList = new List<MenuItem> { new UpMenuItem(1), new DownMenuItem(2), new InstructionMenuItem(3), new ExitMenuItem(4)};            
+            List<MenuItem> menuItemList = new List<MenuItem> { new InstructionMenuItem(3), new DownMenuItem(2), new UpMenuItem(1), new ExitMenuItem(4)};            
             Menu menu = new Menu(menuItemList);
             bool play;
             do

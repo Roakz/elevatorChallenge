@@ -154,6 +154,32 @@ namespace Elevator
             {
                 menuItems[index - 1].PerformAction(); 
             }
+
+            public void selectionHandler()
+            {
+                int selection = 0;
+
+                while (selection == 0)
+                {
+                    try
+                    {
+                        int possibleSelection = Convert.ToInt32(Console.ReadLine());
+                        if (possibleSelection > 3 || possibleSelection < 1) { throw new ArgumentException(); }
+                        else
+                        {
+                            selection = possibleSelection;
+                        }
+                    }
+                    catch
+                    {
+                        Console.Clear();
+                        Console.WriteLine("only numbers 1, 2 or 3 followed by enter.");
+                        PrintMenu();
+                    }
+                }
+
+               CallMenuItem(selection);
+            }
         }    
 
         static void Main(string[] args)
@@ -161,27 +187,8 @@ namespace Elevator
             List<MenuItem> menuItemList = new List<MenuItem> { new UpMenuItem(1), new DownMenuItem(2), new InstructionMenuItem(3) };            
             Menu menu = new Menu(menuItemList);
             menu.PrintMenu();
-            int selection = 0;
-            while (selection == 0)
-            {
-                try
-                {
-                    int possibleSelection = Convert.ToInt32(Console.ReadLine());
-                    if (possibleSelection > 3 || possibleSelection < 1) { throw new ArgumentException(); }
-                    else
-                    {
-                        selection = possibleSelection;
-                    }                   
-                }
-                catch
-                {
-                    Console.Clear();
-                    Console.WriteLine("only numbers 1, 2 or 3 followed by enter.");                    
-                    menu.PrintMenu();
-                }
-            }            
+            menu.selectionHandler();
             
-            menu.CallMenuItem(selection);
             Console.Read();
         }
     }

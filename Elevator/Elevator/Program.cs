@@ -99,6 +99,7 @@ namespace Elevator
 
             public override void PerformAction()
             {
+                // send PassengerJonMEnu information to to controller/allocator for job nd passenger creation.
                 Console.WriteLine("Ahoy from Down");
             }     
 
@@ -154,11 +155,47 @@ namespace Elevator
             }
         }
 
-        class Menu
-        {
-            private List<MenuItem> menuItems;
+        abstract class Menu {
+            abstract public void PrintMenu();
+            abstract protected void CallMenuItem(int index);
+        }
 
-            public Menu(List<MenuItem> mItems)
+        class PassengerJobMenu : Menu
+        {
+            public Dictionary<string, string> PassengerJobData = new Dictionary<string, string>();
+            public PassengerJobMenu() { }
+            public override void PrintMenu()
+            {
+                //Inout validation required
+                Console.WriteLine("Enter a passenger name:");
+                string passengerName = Console.ReadLine();
+                Console.WriteLine("Current Floor?:");
+                byte currentFloor = Convert.ToByte(Console.ReadLine());
+                Console.WriteLine("Desired floor?:");
+                byte desiredFloor = Convert.ToByte(Console.ReadLine());
+
+                HandleMenuInput(passengerName, currentFloor, desiredFloor);
+            }
+
+            private void HandleMenuInput(string name, byte currentFloor, byte desiredFloor)
+            {
+                PassengerJobData.Add("Passenger Name", $"{name}");
+                PassengerJobData.Add("Current Floor", $"{currentFloor}");
+                PassengerJobData.Add("Desired Floor", $"{desiredFloor}");
+                Console.WriteLine(PassengerJobData);
+            }
+            protected override void CallMenuItem(int index)
+            {
+                // Not required to be implemented.
+                throw new NotImplementedException();
+            }
+        }
+
+        class MainMenu : Menu
+        {
+            private readonly List<MenuItem> menuItems;
+
+            public MainMenu(List<MenuItem> mItems)
             {
                 List<MenuItem> sortedList = new List<MenuItem> { };
                 IEnumerable<MenuItem> menuItemQuery =
@@ -167,13 +204,12 @@ namespace Elevator
                     select item;
                 foreach (MenuItem i in menuItemQuery)
                 {
-                    sortedList.Add(i);
-                    Console.WriteLine(i.Index);
+                    sortedList.Add(i);                   
                 }
                 menuItems = sortedList;
             }
 
-            public void PrintMenu()
+            public override void PrintMenu()
             {
                 Console.WriteLine("Please make a selection. (1, 2 or 3)");
                 foreach(MenuItem item in menuItems)
@@ -182,7 +218,7 @@ namespace Elevator
                 }
             }
 
-            public void CallMenuItem(int Index)
+            protected override void CallMenuItem(int Index)
             {
                 menuItems[Index - 1].PerformAction(); 
             }
@@ -219,7 +255,7 @@ namespace Elevator
         static void Main(string[] args)
         {
             List<MenuItem> menuItemList = new List<MenuItem> { new InstructionMenuItem(3), new DownMenuItem(2), new UpMenuItem(1), new ExitMenuItem(4)};            
-            Menu menu = new Menu(menuItemList);
+            MainMenu menu = new MainMenu(menuItemList);
             bool play;
             do
             {                
